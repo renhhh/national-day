@@ -1,111 +1,98 @@
 <template>
-  <div class='form-box'>
-    <img src="../assets/images/form-header.png" alt="表单" class="form-header">
+  <div class="form-box">
+    <img
+      src="../assets/images/form-header.png"
+      alt="表单"
+      class="form-header"
+    />
     <div class="container">
-      <p class="title">Форма регистрации </p>
-      <p class="title">пользователя</p>
       <div class="form-item">
-        <p class="form-desc">
-          Чтобы мы могли лучше обслуживать вас,  пожалуйста, укажите следующую информацию правильно.
-        </p>
+        <div class="form-desc">
+          为了保证您的奖品能够顺利送达您的手中
+        </div>
+        <div class="form-desc">
+          请务必准确填写每一栏信息
+        </div>
+        <div class="form-desc">
+          填写表单可立即获得6张卡片
+        </div>
         <div class="form-input " id="username">
           <div class="form-label">
-            <span><b class="required-flag">*</b> Имя：</span>
-            <span :class="(this.username==''&&label=='1')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
+            <span><b class="required-flag">*</b> 姓名：</span>
+            <span :class="username == '' && label == '1' ? 'error-tip' : 'hide'"
+              >请输入姓名</span
+            >
           </div>
-          <van-field v-model="username" @blur="onBsp($event,'1')" />
+          <van-field v-model="username" @blur="onBsp($event, '1')" />
         </div>
         <div class="form-input" id="number">
           <div class="form-label">
-            <span><b class="required-flag">*</b> Номер телефона：</span>
-            <span :class="(this.number==''&&label=='2')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
+            <span><b class="required-flag">*</b> 电话：</span>
+            <span
+              :class="this.number == '' && label == '2' ? 'error-tip' : 'hide'"
+              >请输入电话</span
+            >
           </div>
-          <van-field v-model="number" @blur="onBsp($event,'2')" type='tel' />
+          <van-field v-model="number" @blur="onBsp($event, '2')" type="tel" />
         </div>
         <div class="form-input " id="email">
           <div class="form-label">
-            <span><b class="required-flag">*</b> Эл. почта：</span>
-            <span :class="(this.email==''&&label=='3')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
+            <span><b class="required-flag">*</b> 行业：</span>
+            <span
+              :class="this.email == '' && label == '3' ? 'error-tip' : 'hide'"
+              >请输入所属行业</span
+            >
           </div>
-          <van-field v-model="email" @blur="onBsp($event,'3')" />
+          <van-field v-model="email" @blur="onBsp($event, '3')" />
         </div>
         <div class="form-input" id="address">
           <div class="form-label">
-            <span><b class="required-flag">*</b> адрес ：</span>
-            <span :class="(this.address==''&&label=='4')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
+            <span
+              ><b class="required-flag">*</b> 公司名称
+              <span class="sub-label">(非世达员工)</span></span
+            >
+            <span
+              :class="this.address == '' && label == '4' ? 'error-tip' : 'hide'"
+              >请输入公司名称</span
+            >
           </div>
-          <van-field v-model="address" @blur="onBsp($event,'4')"  />
-          <!-- <div :style="{ display: (label==4?block:none) }">
-                   <van-picker title="адрес " show-toolbar :columns="repairlist" @confirm="onConfirm" @cancel="onCancel"
-              confirm-button-text='Подтвердить ' cancel-button-text='отмена ' />
-          </div> -->
-          
-          <!-- @click-input="isPickershow = true" -->
-          <!-- <van-cell class="custom-cell" :value="address" @click="isPickershow = true"/>
-          <van-popup v-model="isPickershow" round position="bottom" :style="{ height: '30%' }">
-            <van-picker title="адрес " show-toolbar :columns="columns" @confirm="onConfirm" @cancel="onCancel"
-              confirm-button-text='Подтвердить ' cancel-button-text='отмена ' />
-          </van-popup> -->
-            
-        </div>
-        
-        <div class="form-input" id="repair">
-          <div class="form-label">
-            <span><b class="required-flag">*</b> Желаете обратиться с вопросом гарантийного обслуживания?</span>
-            <span :class="(this.repair=='Выбрать'&&label=='5')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
-          </div>
-          <!-- <van-field v-model="repair" @blur="onBsp($event,'5')" @focus="isrepairPickershow = true"/>
-          <div :class="[isrepairPickershow==true ? 'show' : 'hide' ,]">
-              <van-picker title="адрес " show-toolbar :columns="repairlist" @confirm="onConfirm" @cancel="onCancel"
-              confirm-button-text='Подтвердить ' cancel-button-text='отмена ' style="width:85%;height:300px" />
-          </div> -->
-          
-           <van-cell class="custom-cell" :value="repair" @click="isrepairPickershow = true"/>
-            <van-popup v-model="isrepairPickershow" round position="bottom" :style="{ height: '51%' }">
-            <van-picker title="адрес " show-toolbar :columns="repairlist" @confirm="onConfirm" @cancel="onCancel"
-              confirm-button-text='Подтвердить ' cancel-button-text='отмена ' />
-          </van-popup>
-        </div>
-        <div class="form-input" >
-          <div class="form-label">
-            <span>Да -Гарантийная замена или ремонт товара</span>
-          </div>
-          <van-field v-model="repairINFO" @blur="onBsp($event,'5.5')" />
-           
+          <van-field v-model="address" @blur="onBsp($event, '4')" />
         </div>
         <div class="form-input" id="display">
           <div class="form-label">
-            <span><b class="required-flag">*</b>Желаете выездную демонстрацию наших товаров?</span>
-            <span :class="(this.display=='Выбрать'&&label=='6')?'error-tip':'hide'">этот пункт необходимо заполнить</span>
+            <span><b class="required-flag">*</b> 是否有采购需求</span>
+            <span
+              :class="
+                this.display == 'Выбрать' && label == '6' ? 'error-tip' : 'hide'
+              "
+              >该项不能为空</span
+            >
           </div>
-          <van-cell class="custom-cell" :value="display" @click="isdisplayshow = true"/>
-            <van-popup v-model="isdisplayshow" round position="bottom" :style="{ height: '50%' }">
-            <van-picker title="адрес " show-toolbar :columns="displaylist" @confirm="onConfirms" @cancel="onCancel"
-              confirm-button-text='Подтвердить ' cancel-button-text='отмена ' />
-          </van-popup>
+          <van-field v-model="display" @blur="onBsp($event, '4')" />
         </div>
+
         <div class="form-input">
           <div class="form-label">
-            <!-- <span><b class="required-flag">*</b>Да -Контактное лицо для связи -Номер телефона</span> -->
-            <!-- <span class=" error-tip">必填</span> -->
+            <div>
+              填写助力码<span class="sub-label">(无助力码可不填写)</span>
+            </div>
           </div>
-          <div class="sub-title">
-            Контактное лицо
-          </div>
-          <van-field v-model="contacts" @blur="onBsp($event,' 7')" />
-          <div class="sub-title">
-            Номер телефона
-          </div>
-          <van-field v-model="contactsnNumber" @blur="onBsp($event,'8')" type='tel' />
-           <van-button class="submit-btn" type="primary" block @click="onsubmit($event)">представить</van-button>
+          <van-field v-model="repairINFO" @blur="onBsp($event, '5.5')" />
+        </div>
+
+        <div class="submit-btn" style="text-align:center;margin-top: 20px;">
+          <span>领取卡片</span>
+          <!-- <van-button
+            class="submit-btn"
+            type="primary"
+            
+            @click="onsubmit($event)"
+            >领取卡片</van-button
+          > -->
         </div>
       </div>
-
-     
     </div>
-
   </div>
-  
 </template>
 
 <script>
@@ -121,111 +108,26 @@ export default {
       email: '', //邮箱
       address: '', //地址
       repair: 'Выбрать',
-      repairINFO:"",
-      repairlist:["Да","Нет"],
-      display: 'Выбрать',
-      displaylist:["Да","Нет"],
+      repairINFO: '',
+
+      display: '',
+      displaylist: ['Да', 'Нет'],
       contacts: '', //联系人
       contactsnNumber: '', //联系人地址
       label: '', //通过判断是第几个输入框，并且input值为空，在其旁边展示警告按钮
       isrepairPickershow: false, //展示是否需保用产品
       isdisplayshow: false, //展示是否需预约上门拜访服务
-      columns: [
-        'москва',
-        ' санкт - петербург',
-        'севастополь',
-        ' ненецкий автономный округ ',
-        ' Ханты - Мансийский автономный округ ',
-        ' чукотский автономный округ ',
-        'ямало - ненецкий автономный округ',
-        ' Республика адиг ',
-        ' республика алтай ',
-        ' башкортостанская Республика ',
-        ' Республика Бурятия ',
-        ' Дагестанская Республика ',
-        ' Республика Ингушетия ',
-        ' кабардино - Балкарская Республика ',
-        ' Республика Калмыкия - халимгтанги ',
-        ' карачаево - Черкесская Республика ',
-        ' республика карелия ',
-        ' республика коми ',
-        'Республика Мариэль',
-        'республика мордовия',
-        'Республика Саха (Якутия)',
-        'Республика Северная Осетия',
-        'Республика Татарстан',
-        'Республика Тыва',
-        'Республика удмурт',
-        'Республика хакас',
-        'Чеченская Республика',
-        'чувашская республика',
-        'республика крым',
-        'амурская, Архангельская',
-        'астраханская',
-        'Белгородская',
-        'Брянская',
-        'владимирская',
-        'Волгоградская',
-        'вологодская',
-        'Воронежская',
-        'ивановская',
-        'иркутская',
-        'Калининградская',
-        'Калужская',
-        'Кировская',
-        'Костромская',
-        'Курганская',
-        'курская',
-        'Ленинградская область',
-        ' Магаданская область',
-        'московская область',
-        'мурманская область',
-        'нижний новгород',
-        ' Новгородская область',
-        'Новосибирская область',
-        'Омская область',
-        'оренбургская область',
-        'Пензенская область',
-        'Псковская область',
-        'Ростовская область',
-        'рязанская область',
-        'Самарская область',
-        'саратовская область',
-        'сахалинская область',
-        'свердловская область',
-        'Смоленская область',
-        'Тамбовская область',
-        'Тверская',
-        'Томская',
-        'Тульская',
-        'Тюменская',
-        'Ульяновская',
-        'челябинская',
-        'Липецкая',
-        'кемеровская',
-        'ярославская область',
-        'алтайский край',
-        'краснодарский край',
-        'Красноярский край',
-        'приморский край',
-        'Ставропольский край',
-        'хабаровский край',
-        'пермский край',
-        'Камчатский край',
-        'забайкальский край',
-        ' Еврейская автономная область ',
-        'Прочее ',
-      ],
-      localstorageList:{
-      username: '', //名字
-      number: '', //手机号
-      email: '', //邮箱
-      address: '', //地址
-      repair: 'Выбрать',
-      repairINFO:"",
-      repairlist:["Да","Нет"],
-      display: 'Выбрать',
-      }
+
+      localstorageList: {
+        username: '', //名字
+        number: '', //手机号
+        email: '', //邮箱
+        address: '', //地址
+        repair: 'Выбрать',
+        repairINFO: '',
+
+        display: 'Выбрать',
+      },
     }
   },
   computed: {},
@@ -238,8 +140,8 @@ export default {
     // if(!document.referrer&&window.location.href.indexOf("eqxiu.com")==-1){
     //    window.location.href=`https://a.eqxiu.com/s/ScaRWX4O?bt=yxy`
     // }
-    
-    console.log('document.referrer',document.referrer)
+
+    console.log('document.referrer', document.referrer)
   },
   methods: {
     // onSubmit(values) {
@@ -277,7 +179,7 @@ export default {
       this.repair = value
       //隐藏是否需保用产品
       this.isrepairPickershow = false
-      this.label=5
+      this.label = 5
       console.log(`当前值：${value}, 当前索引：${index}`)
     },
     onConfirms(value, index) {
@@ -285,7 +187,7 @@ export default {
       this.display = value
       //隐藏联系人picker
       this.isdisplayshow = false
-      this.label=='6'
+      this.label == '6'
       console.log(`当前值：${value}, 当前索引：${index}`)
     },
     onChange(picker, value, index) {
@@ -294,8 +196,8 @@ export default {
       console.log(`onChange当前值：${value}, 当前索引：${index}`)
     },
     onCancel() {
-        this.isdisplayshow = false
-          this.isrepairPickershow = false
+      this.isdisplayshow = false
+      this.isrepairPickershow = false
     },
     getTop(e) {
       //获得当前元素的位置
@@ -306,7 +208,9 @@ export default {
 
     onsubmit(e) {
       var getID = ''
-      console.log('https://dxg.bluetopo.cn/daxigua-master/?mobile='+this.number)
+      console.log(
+        'https://dxg.bluetopo.cn/daxigua-master/?mobile=' + this.number
+      )
       if (this.username == '') {
         getID = 'username'
         this.label = 1
@@ -325,31 +229,32 @@ export default {
       } else if (this.display == 'Выбрать') {
         getID = 'display'
         this.label = 6
-      }else{
-        let that=this
+      } else {
+        let that = this
         axios({
-          method:'post',
-          url:'https://api.test.bluetopo.cn:8212/user/savesd',
+          method: 'post',
+          url: 'https://api.test.bluetopo.cn:8212/user/savesd',
           data: {
-              "f_RealName": this.username,
-              "f_Mobile": this.number,
-              "f_Email": this.email,
-              "f_Address": this.address,
-              "f_IsNeedProduct":this.repair=="Нет"?0:this.display=="Да"?1:"",
-              "f_ProductType": this.repairINFO,
-              "f_IsNeedVisit": this.display=="Нет"?0:this.display=="Да"?1:"",
-              "f_ContactName":  this.contacts,
-              "f_ContactTel":  this.contactsnNumber
-            }
-        })
-        .then(function(response) {
+            f_RealName: this.username,
+            f_Mobile: this.number,
+            f_Email: this.email,
+            f_Address: this.address,
+            f_IsNeedProduct:
+              this.repair == 'Нет' ? 0 : this.display == 'Да' ? 1 : '',
+            f_ProductType: this.repairINFO,
+            f_IsNeedVisit:
+              this.display == 'Нет' ? 0 : this.display == 'Да' ? 1 : '',
+            f_ContactName: this.contacts,
+            f_ContactTel: this.contactsnNumber,
+          },
+        }).then(function(response) {
           console.log(response.status)
-          localStorage.setItem("url",response.data.data+that.number )
-          localStorage.setItem("f_Mobile",that.number )
-          if(response.status==200){
-              window.location.href=response.data.data+that.number
+          localStorage.setItem('url', response.data.data + that.number)
+          localStorage.setItem('f_Mobile', that.number)
+          if (response.status == 200) {
+            window.location.href = response.data.data + that.number
           }
-      });
+        })
       }
       if (getID) {
         var box = document.getElementById(getID)
@@ -369,15 +274,15 @@ export default {
   }
   .custom-cell {
     border-radius: 12px;
-    height:44px;
+    height: 44px;
   }
 }
 </style>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .form-box {
   .form-header {
-    height: 280px;
-    width:100%;
+    height: 240px;
+    width: 100%;
   }
   .container {
     color: #fff;
@@ -392,9 +297,10 @@ export default {
       padding: 12px 30px;
     }
     .form-desc {
-      line-height: 24px;
-      font-size: 18px;
-      margin-bottom: 20px;
+      // line-height: 24px;
+      font-size: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
     }
 
     .form-input {
@@ -424,14 +330,25 @@ export default {
         padding: 6px 12px;
       }
     }
-    .submit-btn {
-      margin-top: 20px;
-      background: #e6f9c0;
-      color: #005600;
+    .sub-label {
+      font-size: 10px;
     }
-    .show{
+    .submit-btn {
+      width: 100px;
+      margin:0 auto;
+      padding: 15px 24px;
+      background: #15C693;
+      color: #fff;
+      border-radius: 10px;
+      // background:url('../assets/images/submit.png') no-repeat center center;
+      // background-size: 100% 100%;
+      span {
+        letter-spacing: 2px;
+        font-size: 16px;
+      }
+    }
+    .show {
       display: block;
-     
     }
     .hide {
       display: none;

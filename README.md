@@ -1,4 +1,4 @@
-# luck-draw
+# national-day
 
 ## Project setup
 ```

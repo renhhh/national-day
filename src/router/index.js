@@ -10,6 +10,21 @@ const routes = [
     component: () => import('../views/form.vue'),
   },
   {
+    path: '/card',
+    name: 'Card',
+    component: () => import('../views/card.vue'),
+  },
+  {
+    path: '/poster',
+    name: 'Poster',
+    component: () => import('../views/poster.vue'),
+  },
+  {
+    path: '/leader-board',
+    name: 'LeaderBoard',
+    component: () => import('../views/leader-board.vue'),
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue'),

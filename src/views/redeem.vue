@@ -114,9 +114,7 @@ export default {
         display: inline-block;
         width: 300px;
         height: 60px;
-        background: url('../assets/images/confirm-btn.png') no-repeat center
-          center;
-        background-size: 100% 100%;
+       
       }
     }
   }

@@ -1,34 +1,63 @@
 <template>
   <div class="home">
     <div class="header"></div>
-    <div class="sub-title"></div>
-    <div class="sup-title"></div>
+
     <div class="content">
-      <LuckyWheel ref="LuckyWheel" height="330px" :blocks="blocks" :prizes="prizes" :buttons="buttons"
-        @start="startCallBack" @end="endCallBack" :default-config="defaultConfig" />
+      <LuckyWheel
+        ref="LuckyWheel"
+        height="330px"
+        :blocks="blocks"
+        :prizes="prizes"
+        :buttons="buttons"
+        @start="startCallBack"
+        @end="endCallBack"
+        :default-config="defaultConfig"
+      />
     </div>
-    <div class="rule" @click="handleClick(0)"></div>
-    <div class="present-btn" @click="handleClick(1)"></div>
+<!--  @click="handleClick(1)" -->
+    <div class="present-btn">开始抽奖</div>
     <!-- 中奖弹框 -->
     <div class="custom-dialog" v-if="showPresentDialog">
       <div class="dialog-content">
         <!-- 中奖 -->
         <div class="dialog-sub-box">
           <div v-if="pIndex != 6" class="dialog-title-desc">Поздравляем!</div>
-          <img class="dialog-img" v-if="pIndex == 1" src="../assets/present/1-sub.png">
-          <img class="dialog-img" v-if="pIndex == 2" src="../assets/present/2-sub.png">
-          <img class="dialog-img" v-if="pIndex == 3" src="../assets/present/3-sub.png">
-          <img class="dialog-img" v-if="pIndex == 4" src="../assets/present/4-sub.png">
-          <img class="dialog-img" v-if="pIndex == 5" src="../assets/present/5-sub.png">
+          <img
+            class="dialog-img"
+            v-if="pIndex == 1"
+            src="../assets/present/1-sub.png"
+          />
+          <img
+            class="dialog-img"
+            v-if="pIndex == 2"
+            src="../assets/present/2-sub.png"
+          />
+          <img
+            class="dialog-img"
+            v-if="pIndex == 3"
+            src="../assets/present/3-sub.png"
+          />
+          <img
+            class="dialog-img"
+            v-if="pIndex == 4"
+            src="../assets/present/4-sub.png"
+          />
+          <img
+            class="dialog-img"
+            v-if="pIndex == 5"
+            src="../assets/present/5-sub.png"
+          />
           <div v-if="pIndex == 6">
             <div class="not-title">к несчастью</div>
             <div class="not-sub-title">Ты не выиграл</div>
           </div>
           <div class="dialog-btn-group">
             <!-- 再玩一次 -->
-            <span class="play" @click="goOutPage">играть снова</span>
+            <span class="play" @click="goPage">查看榜单</span>
             <!-- 去领奖 -->
-            <span v-if="pIndex != 6" class="surn" @click="receivePresent">Принять награду</span>
+            <span v-if="pIndex != 6" class="surn" @click="receivePresent"
+              >Принять награду</span
+            >
           </div>
         </div>
         <!-- 未中奖 -->
@@ -38,36 +67,45 @@
       
     </van-dialog> -->
     <!-- popup -->
-    <van-popup v-model="show" round position="bottom" :style="{ height: '70%' }">
+    <van-popup
+      v-model="show"
+      round
+      position="bottom"
+      :style="{ height: '70%' }"
+    >
       <van-tabs v-model="active">
         <van-tab title="О лотерее">
           <div class="active-desc">
             <div class="active-desc-title">Призы:</div>
-            <div class="present-item" :style="{background:item.bgcolor}" v-for="(item,index) of presentData"
-              :key="index">
-              <span class="index">{{++index}}</span>
-              <span>{{item.name}}</span>
+            <div
+              class="present-item"
+              :style="{ background: item.bgcolor }"
+              v-for="(item, index) of presentData"
+              :key="index"
+            >
+              <span class="index">{{ ++index }}</span>
+              <span>{{ item.name }}</span>
             </div>
             <div>
               <div class="present-time">Период проведения лотереи</div>
               <div class="present-time">2021/5/17 - 2021/6/15</div>
-
             </div>
           </div>
-
         </van-tab>
         <van-tab title="Мой приз">
           <div class="active-desc">
-            <div @click="clickAward(item)" class="present-item-desc" v-for="(item,index) of awardList" :key="index">
-              <div class="one">{{item.luckyLevel}}</div>
-              <div class="two">{{item.luckyDescribe}}</div>
-              <div class="three">
-                время выигрыша : {{item.luckyTime}}
-              </div>
+            <div
+              @click="clickAward(item)"
+              class="present-item-desc"
+              v-for="(item, index) of awardList"
+              :key="index"
+            >
+              <div class="one">{{ item.luckyLevel }}</div>
+              <div class="two">{{ item.luckyDescribe }}</div>
+              <div class="three">время выигрыша : {{ item.luckyTime }}</div>
             </div>
           </div>
         </van-tab>
-
       </van-tabs>
     </van-popup>
   </div>
@@ -84,7 +122,7 @@ export default {
       active: 0,
       dialogShow: true,
       pIndex: 1,
-      showPresentDialog: false,
+      showPresentDialog: true,
       presentData: [
         {
           name: 'первое место безщёточная аккумуляторная ударная дрель',
@@ -109,18 +147,19 @@ export default {
         },
       ],
       blocks: [
+        { padding: '10px', background: '#006648' },
+        { padding: '14px', background: '#fad5a4' },
         { padding: '4px', background: '#006648' },
-        { padding: '10px', background: '#fad5a4' },
-        { padding: '2px', background: '#e76f51' },
       ],
       buttons: [
         {
-          radius: '40px',
+          radius: '20px',
           imgs: [
             {
-              src: require('../assets/images/present-btn.png'),
-              width: '105%',
-              top: '-130%',
+              src: require('../assets/images/point.png'),
+              width: '100%',
+              height: '180%',
+              top: '-70%',
             },
           ],
         },
@@ -133,13 +172,13 @@ export default {
     }
   },
   created() {
-    const mobile = localStorage.getItem('f_Mobile')
-    if (!mobile) {
-      this.$router.push('/')
-      return
-    }
-    this.mobile = mobile
-    this.getMyPresent()
+    // const mobile = localStorage.getItem('f_Mobile')
+    // if (!mobile) {
+    //   this.$router.push('/')
+    //   return
+    // }
+    // this.mobile = mobile
+    // this.getMyPresent()
   },
   mounted() {
     this.getPrizesList()
@@ -153,65 +192,69 @@ export default {
       const prizes = []
       let data = [
         {
-          name: '',
-          img: require('../assets/present/1.png'),
-          color: '#f8d384',
+          name: '二等奖',
+          color: '#FFFFFF',
+          fontColor: '#FFD502',
+          subName: '88件套',
+          flag: 2,
+        },
+        {
+          name: '一等奖',
+
+          color: '#006648',
+          fontColor: '#FFD502',
+          subName: '家用礼包',
           flag: 1,
         },
         {
-          name: '',
-          img: require('../assets/present/3.png'),
-          color: '#f9e3bb',
-          flag: 3,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-        {
-          name: '',
-          img: require('../assets/present/2.png'),
-          color: '#f8d384',
+          name: '二等奖',
+          color: '#FFFFFF',
+          fontColor: '#FFD502',
+          subName: '洗车枪',
           flag: 2,
         },
-
         {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/4.png'),
-          color: '#f9e3bb',
-          flag: 4,
+          name: '三等奖',
+          color: '#006648',
+          fontColor: '#FFD502',
+          subName: 'DIY大礼包',
+          flag: 1,
         },
         {
-          name: '',
-          img: require('../assets/present/5.png'),
-          color: '#fef43e',
-          flag: 5,
-        },
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
+          name: '一等奖',
+          color: '#FFFFFF',
+          fontColor: '#FFD502',
+          subName: '车主礼包',
+          flag: 1,
         },
       ]
       data.forEach((item, index) => {
         prizes.push({
           // name: item.name,
           background: item.color,
-          fonts: [{ text: item.name, top: '10%' }],
-          imgs: [{ src: item.img, width: '65%', top: '5%' }],
+          fonts: [
+            { text: item.name, top: '10%', fontColor: item.fontColor },
+            {
+              text: item.subName,
+              top: '30%',
+              fontColor: item.fontColor,
+              lengthLimit: 30,
+            },
+          ],
           flag: item.flag,
         })
+      })
+      prizes.push({
+        background: '#006648',
+        fonts: [
+          {
+            text: '谢谢参与',
+            top: '12%',
+            fontColor: '#fff',
+            lengthLimit: 30,
+          },
+        ],
+        flag: 8,
       })
       this.prizes = prizes
     },
@@ -299,10 +342,8 @@ export default {
       this.showPresentDialog = true
       // alert(`恭喜你获得${prize.title}`)
     },
-    goOutPage() {
-      this.showPresentDialog = false
-      let url = localStorage.getItem('url')
-      window.location.href = url
+    goPage() {
+      this.$router.push('/leader-board')
     },
   },
 }
@@ -316,53 +357,34 @@ export default {
 </style>
 <style lang="scss" scoped>
 .home {
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
   box-sizing: border-box;
   padding: 20px 30px;
   width: 100%;
   height: 100%;
-  font-size: 50px;
-  background: url('../assets/images/bg.png') no-repeat center center;
-  background-size: 100% 100%;
+  background: #fff;
+  // font-size: 50px;
+  // background: url('../assets/images/bg.png') no-repeat center center;
+  // background-size: 100% 100%;
   .header {
-    height: 80px;
-    background: url('../assets/images/header.png') no-repeat center center;
-    background-size: contain;
+    height: 200px;
+    background: url('../assets/images/luck-header.png') no-repeat center center;
+    background-size: 100% 100%;
   }
-  .sub-title {
-    height: 60px;
-    background: url('../assets/images/sub-title.png') no-repeat center center;
-    background-size: contain;
-  }
-  .sup-title {
-    height: 60px;
-    background: url('../assets/images/sup-title.png') no-repeat center center;
-    background-size: contain;
-  }
+
   .content {
     height: 330px;
   }
   .present-btn {
-    position: absolute;
-    right: 10px;
-    top: 69%;
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    background: url('../assets/images/present.png') no-repeat center center;
-    background-size: contain;
-  }
-  .rule {
-    position: absolute;
-    right: 0;
-    top: 30px;
-    display: inline-block;
-    width: 80px;
-    height: 70px;
-    background: url('../assets/images/rule.png') no-repeat center center;
-    background-size: contain;
+    width: 120px;
+    background: #098d66;
+    color: #fff;
+    padding: 12px 0;
+    text-align:center;
+    border-radius: 8px;
+    margin: 30px auto;
+    &:active {
+      background:#2fd7a5;
+    }
   }
 
   .active-desc {

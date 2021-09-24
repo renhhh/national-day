@@ -1,5 +1,5 @@
 {
-  "name": "luck-draw",
+  "name": "national-day",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,6 @@
     "core-js": "^3.6.5",
     "qs": "^6.10.1",
     "vant": "^2.12.18",
-    "vconsole": "^3.5.2",
     "vue": "^2.6.11",
     "vue-luck-draw": "^3.4.5",
     "vue-router": "^3.2.0"
