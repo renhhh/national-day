@@ -118,11 +118,11 @@ export default {
   name: 'Home',
   data() {
     return {
-      show: false,
+      show: true,
       active: 0,
       dialogShow: true,
       pIndex: 1,
-      showPresentDialog: true,
+      showPresentDialog: false,
       presentData: [
         {
           name: 'первое место безщёточная аккумуляторная ударная дрель',
