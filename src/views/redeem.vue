@@ -1,30 +1,20 @@
 <template>
   <div class="redeem">
-    <div class="title">{{detail.luckyLevel}}</div>
-    <div class="title">{{detail.luckyDescribe}}</div>
+    <div class="header"></div>
     <div class="content">
-      <div>Получите Свой Приз!</div>
-      <div class="second-line">
-        <span class="one font-color">Код приза</span>
-        <span class="two" id="copyValERC20">{{detail.luckyCode}}</span>
-        <span class="copy-btn copyBtn" data-clipboard-target="#copyValERC20" @click="copy">Нажмите Копировать</span>
-      </div>
-      <div class="qrcode">
-        <img class="qrcode-img" src="../assets/images/qrcode.jpg" alt="">
-      </div>
-      <div class="time font-color">Период предоставления кодов для получения выигрыша</div>
-      <div>2021/5/17 - 2021/6/15</div>
-      <div class="time font-color">Внимание! </div>
-      <div>Чтобы получить приз, необходимо предоставить код Вашего приза</div>
-      <div class="confirm-btn">
-        <span @click="toastInfo"></span>
-      </div>
+      <div class="title">兑换码</div>
+      <div class="code">123213</div>
+      <div class="bg-qcord"></div>
+      <div class="font-style">如何兑奖</div>
+      <div class="font-style mb-20">扫码添加企业微信 进入企业微信凭兑换码领取奖品</div>
+      <div class="font-style">活动时间</div>
+      <div class="font-style">2021年10月1日 一 2021年10月7日</div>
     </div>
   </div>
 </template>
 <script>
 import ClipboardJS from 'clipboard'
-import { Toast } from 'vant';
+import { Toast } from 'vant'
 export default {
   name: 'Redeem',
   data() {
@@ -57,65 +47,61 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .redeem {
+  position: relative;
   box-sizing: border-box;
-  padding-top: 70px;
+  width: 100%;
   height: 100%;
-  background: url('../assets/images/redeem-bg.png') no-repeat center center;
-  background-size: 100% 100%;
-  .title {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: red;
-    font-weight: bold;
+  background: #fff;
+  color: #26654c;
+  .header {
+    height: 260px;
+    background: url('../assets/images/login.png') no-repeat center center;
+    background-size: 100% 100%;
   }
   .content {
+    position: absolute;
     box-sizing: border-box;
-    padding: 48px 43px 0;
-    color: #000;
-    .second-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      .copy-btn {
-        box-sizing: border-box;
-        text-align: center;
-        width: 100px;
-        padding: 4px 8px;
-        background: cadetblue;
-        border-radius: 20px;
-        font-size: 12px;
-        color: cornsilk;
-      }
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 500px;
+    border: 2px solid #016648;
+    border-radius: 12px;
+    background: #fff;
+    padding: 30px 20px;
+    .title {
+      color: #5f5f5f;
+      font-weight: bold;
     }
+    .code {
+      margin: 18px 0 30px 0;
+      height: 40px;
+      line-height: 40px;
+      padding-left: 10px;
+      color:#000;
+      border: 1px solid #e4e4e4;
+      border-radius: 12px;
+    }
+    .bg-qcord {
+      width: 200px;
+      height: 200px;
+      background: url('../assets/images/detail/qrcode.png') no-repeat center
+        center;
+      background-size: 100% 100%;
 
-    .qrcode {
-      height: 125px;
-      // border: 1px solid #000;
-      .qrcode-img {
-        height: 125px;
-        margin-left: 80px;
-      }
+      margin: 0 auto 30px;
     }
-
-    .time {
-      margin: 20px 0 10px;
+    .font-style {
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 18px;
     }
-    .font-color {
-      color: #ccc;
-    }
-    .confirm-btn {
-      margin-top: 50px;
-      text-align: center;
-      > span {
-        display: inline-block;
-        width: 300px;
-        height: 60px;
-       
-      }
+    .mb-20 {
+      margin-bottom: 20px;
     }
   }
 }

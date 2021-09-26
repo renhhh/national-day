@@ -14,7 +14,7 @@
         :default-config="defaultConfig"
       />
     </div>
-<!--  @click="handleClick(1)" -->
+    <!--  @click="handleClick(1)" -->
     <div class="present-btn">开始抽奖</div>
     <!-- 中奖弹框 -->
     <div class="custom-dialog" v-if="showPresentDialog">
@@ -63,9 +63,9 @@
         <!-- 未中奖 -->
       </div>
     </div>
-    <!-- <van-dialog v-model="dialogShow" :showConfirmButton="false">
-      
-    </van-dialog> -->
+    <div class="dialog-btn" @click="show = true">
+      <div>我的<br/>奖品</div>
+    </div>
     <!-- popup -->
     <van-popup
       v-model="show"
@@ -74,25 +74,21 @@
       :style="{ height: '70%' }"
     >
       <van-tabs v-model="active">
-        <van-tab title="О лотерее">
+        <van-tab title="奖品详情">
           <div class="active-desc">
-            <div class="active-desc-title">Призы:</div>
-            <div
-              class="present-item"
-              :style="{ background: item.bgcolor }"
-              v-for="(item, index) of presentData"
-              :key="index"
-            >
-              <span class="index">{{ ++index }}</span>
-              <span>{{ item.name }}</span>
-            </div>
+            <img src="../assets/images/detail/one.png" alt="一等奖" />
+            <img src="../assets/images/detail/home.png" alt="家住礼包" />
+
+            <img src="../assets/images/detail/two.png" alt="二等奖" />
+            <img src="../assets/images/detail/three.png" alt="三等奖" />
+
             <div>
-              <div class="present-time">Период проведения лотереи</div>
-              <div class="present-time">2021/5/17 - 2021/6/15</div>
+              <div class="present-time">活动日期</div>
+              <div class="present-time">2021/10/1 - 2021/10/7</div>
             </div>
           </div>
         </van-tab>
-        <van-tab title="Мой приз">
+        <van-tab title="我的奖品">
           <div class="active-desc">
             <div
               @click="clickAward(item)"
@@ -118,34 +114,12 @@ export default {
   name: 'Home',
   data() {
     return {
-      show: true,
+      show: false,
       active: 0,
       dialogShow: true,
       pIndex: 1,
       showPresentDialog: false,
-      presentData: [
-        {
-          name: 'первое место безщёточная аккумуляторная ударная дрель',
-          bgcolor: '#FAEFBF',
-        },
-        {
-          name:
-            'второе место аккумуляторная(беспроводная) мойка высокого давления',
-          bgcolor: '#DAD9D9',
-        },
-        {
-          name: 'третье место набор отвёрток SАТА пэн',
-          bgcolor: '#F0BC75',
-        },
-        {
-          name: 'четвёртое место набор инструментов 53 из предметов',
-          bgcolor: '#F3C88F',
-        },
-        {
-          name: 'пятое место упаковка нитриловых перчаток (10 пар)',
-          bgcolor: '#F3C88F',
-        },
-      ],
+ 
       blocks: [
         { padding: '10px', background: '#006648' },
         { padding: '14px', background: '#fad5a4' },
@@ -357,6 +331,7 @@ export default {
 </style>
 <style lang="scss" scoped>
 .home {
+  position:relative;
   box-sizing: border-box;
   padding: 20px 30px;
   width: 100%;
@@ -379,22 +354,40 @@ export default {
     background: #098d66;
     color: #fff;
     padding: 12px 0;
-    text-align:center;
+    text-align: center;
     border-radius: 8px;
     margin: 30px auto;
     &:active {
-      background:#2fd7a5;
+      background: #2fd7a5;
     }
   }
+.dialog-btn {
+  position: absolute;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  top:200px;
+  width: 60px;
+  height: 50px;
+  border-radius: 10px 0 0 10px;
+  border-right:none;
+  background:#006648;
+  text-align:center;
+  font-size: 14px;
 
+}
   .active-desc {
     color: #000;
     font-size: 14px;
+    padding: 12px 30px;
     .active-desc-title {
       padding: 10px 30px;
       font-size: 16px;
     }
-
+    img {
+      width: 100%;
+    }
     .present-item {
       display: flex;
       align-items: center;
