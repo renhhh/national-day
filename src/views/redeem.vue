@@ -3,7 +3,7 @@
     <div class="header"></div>
     <div class="content">
       <div class="title">兑换码</div>
-      <div class="code">123213</div>
+      <div class="code">{{detail.luckyCode}}</div>
       <div class="bg-qcord"></div>
       <div class="font-style">如何兑奖</div>
       <div class="font-style mb-20">扫码添加企业微信 进入企业微信凭兑换码领取奖品</div>
@@ -19,6 +19,7 @@ export default {
   name: 'Redeem',
   data() {
     return {
+      code: '',
       detail: {},
     }
   },

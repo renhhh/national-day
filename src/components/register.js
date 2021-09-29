@@ -9,9 +9,8 @@ import { Tab, Tabs } from 'vant';
 import { Dialog } from 'vant';
 import { Picker } from 'vant';
 import { Cell, CellGroup } from 'vant';
-// import { Toast } from 'vant';
+import { RadioGroup, Radio } from 'vant';
 
-// Vue.use(Toast);
 Vue.use(Cell);
 Vue.use(CellGroup);
 Vue.use(Picker);
@@ -22,3 +21,5 @@ Vue.use(Popup);
 Vue.use(Button);
 Vue.use(Field);
 Vue.use(Form);
+Vue.use(Radio);
+Vue.use(RadioGroup);

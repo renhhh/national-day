@@ -12,255 +12,95 @@
       </div>
     </div>
     <div class="card-area">
-      <img src="../assets/images/card/cheng.png" alt="承" />
-      <img src="../assets/images/card/nuo.png" alt="诺" />
-      <img src="../assets/images/card/circle.png" alt="点" />
-      <img src="../assets/images/card/rang.png" alt="让" />
-      <img src="../assets/images/card/ping.png" alt="平" />
-      <img src="../assets/images/card/fan.png" alt="凡" />
-      <img src="../assets/images/card/jian.png" alt="见" />
-      <img src="../assets/images/card/zheng.png" alt="证" />
-      <img src="../assets/images/card/empty.png" alt="证" />
-      <img src="../assets/images/card/empty.png" alt="证" />
+      <img
+        v-for="(item, index) of imgData"
+        :key="index"
+        :src="item.imgUrl"
+        :alt="item.imgUrl"
+      />
     </div>
 
     <div class="btn-group">
-      <span>请TA助力</span>
-      <span>即刻抽奖</span>
+      <span @click="jumpPoster">请TA助力</span>
+      <span @click="jumpHome">即刻抽奖</span>
     </div>
   </div>
 </template>
 
 <script>
 import axios from '../assets/js/axios'
+import { Toast } from 'vant'
 
 export default {
   name: 'Card',
   data() {
     return {
-      show: false,
-      active: 0,
-      dialogShow: true,
-      pIndex: 1,
-      showPresentDialog: false,
-      presentData: [
+      userInfo: JSON.parse(sessionStorage.getItem('userInfo')),
+      emptyUrl: {
+        imgUrl: require('../assets/images/card/empty.png'),
+      },
+      imgData: [],
+      imgOriginData: [
         {
-          name: 'первое место безщёточная аккумуляторная ударная дрель',
-          bgcolor: '#FAEFBF',
+          imgUrl: require('../assets/images/card/cheng.png'),
         },
         {
-          name:
-            'второе место аккумуляторная(беспроводная) мойка высокого давления',
-          bgcolor: '#DAD9D9',
+          imgUrl: require('../assets/images/card/nuo.png'),
         },
         {
-          name: 'третье место набор отвёрток SАТА пэн',
-          bgcolor: '#F0BC75',
+          imgUrl: require('../assets/images/card/circle.png'),
         },
         {
-          name: 'четвёртое место набор инструментов 53 из предметов',
-          bgcolor: '#F3C88F',
+          imgUrl: require('../assets/images/card/rang.png'),
         },
         {
-          name: 'пятое место упаковка нитриловых перчаток (10 пар)',
-          bgcolor: '#F3C88F',
+          imgUrl: require('../assets/images/card/ping.png'),
         },
-      ],
-      blocks: [
-        { padding: '4px', background: '#006648' },
-        { padding: '10px', background: '#fad5a4' },
-        { padding: '2px', background: '#e76f51' },
-      ],
-      buttons: [
         {
-          radius: '40px',
-          imgs: [
-            {
-              src: require('../assets/images/present-btn.png'),
-              width: '105%',
-              top: '-130%',
-            },
-          ],
+          imgUrl: require('../assets/images/card/fan.png'),
+        },
+        {
+          imgUrl: require('../assets/images/card/jian.png'),
+        },
+        {
+          imgUrl: require('../assets/images/card/zheng.png'),
+        },
+        {
+          imgUrl: require('../assets/images/card/wei.png'),
+        },
+        {
+          imgUrl: require('../assets/images/card/da.png'),
         },
       ],
-      prizes: [],
-      defaultConfig: { speed: 15 },
-      mobile: '',
-      prize: {},
-      awardList: [], //我的奖品
     }
   },
   created() {
-    // const mobile = localStorage.getItem('f_Mobile')
-    // if (!mobile) {
-    //   this.$router.push('/')
-    //   return
-    // }
-    // this.mobile = mobile
-    // this.getMyPresent()
-  },
-  mounted() {
-    this.getPrizesList()
+    console.log(this.imgData)
+    let cardNum = this.userInfo.cardNumb
+    if (cardNum >= 10) {
+      this.imgData = JSON.parse(JSON.stringify(this.imgOriginData))
+    } else {
+      this.imgData = JSON.parse(JSON.stringify(this.imgOriginData)).slice(
+        0,
+        cardNum
+      )
+      let len = 10 - cardNum
+      for (let i = 0; i < len; i++) {
+        this.imgData.push(this.emptyUrl)
+      }
+    }
   },
   methods: {
-    handleClick(flag) {
-      this.active = flag
-      this.show = true
+    jumpPoster() {
+      this.$router.push('/poster')
     },
-    getPrizesList() {
-      const prizes = []
-      let data = [
-        {
-          name: '',
-          img: require('../assets/present/1.png'),
-          color: '#f8d384',
-          flag: 1,
-        },
-        {
-          name: '',
-          img: require('../assets/present/3.png'),
-          color: '#f9e3bb',
-          flag: 3,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-        {
-          name: '',
-          img: require('../assets/present/2.png'),
-          color: '#f8d384',
-          flag: 2,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/4.png'),
-          color: '#f9e3bb',
-          flag: 4,
-        },
-        {
-          name: '',
-          img: require('../assets/present/5.png'),
-          color: '#fef43e',
-          flag: 5,
-        },
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-      ]
-      data.forEach((item, index) => {
-        prizes.push({
-          // name: item.name,
-          background: item.color,
-          fonts: [{ text: item.name, top: '10%' }],
-          imgs: [{ src: item.img, width: '65%', top: '5%' }],
-          flag: item.flag,
-        })
-      })
-      this.prizes = prizes
-    },
-    getResult() {
-      return new Promise((resolve, reject) => {
-        axios
-          .post('/LuckyDraw/goodluck', {
-            mobile: this.mobile,
-            // isWin: 1,
-          })
-          .then((res) => {
-            console.log('中奖结果：', res)
-            const { data } = res
-            resolve(data)
-          })
-      })
-    },
-    // 获取我的奖品
-    getMyPresent() {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('LuckyDraw/lucklist', {
-            params: {
-              mobile: this.mobile,
-            },
-          })
-          .then((res) => {
-            const { data } = res
-            console.log(data)
-            this.awardList = data.data
-            resolve(data)
-          })
-      })
-    },
-    receivePresent() {
-      this.$router.push({
-        path: '/redeem',
-        query: {
-          detail: JSON.stringify(this.prize),
-        },
-      })
-    },
-    clickAward(item) {
-      this.$router.push({
-        path: '/redeem',
-        query: {
-          detail: JSON.stringify(item),
-        },
-      })
-    },
-    getPresentDetail(id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('/LuckyDraw/luckDetail', {
-            params: {
-              mobile: this.mobile,
-            },
-          })
-          .then((res) => {
-            const { data } = res
-            console.log(data)
-            resolve(data)
-          })
-      })
-    },
-    startCallBack() {
-      let that = this
-      this.$refs.LuckyWheel.play()
-      setTimeout(() => {
-        that.getResult().then((res) => {
-          let flag
-          that.prizes.forEach((item, index) => {
-            if (item.flag === res.data.luckyKeyCode) {
-              flag = index
-              this.prize = res.data
-            }
-          })
-          that.$refs.LuckyWheel.stop(flag)
-        })
-      }, 3000)
-    },
-    endCallBack(prize) {
-      this.pIndex = prize.flag
-      // this.prize = prize
-      this.showPresentDialog = true
-      // alert(`恭喜你获得${prize.title}`)
-    },
-    goOutPage() {
-      this.showPresentDialog = false
-      let url = localStorage.getItem('url')
-      window.location.href = url
+    jumpHome() {
+      let num = this.userInfo.hasNum
+      if (num == 0) {
+        Toast.fail('非常抱歉，您的卡片数量未达到抽奖条件！')
+        return
+      }
+      this.$router.push('/home')
     },
   },
 }
@@ -322,7 +162,7 @@ export default {
   }
   .btn-group {
     margin: 40px 0 20px;
-    text-align:center;
+    text-align: center;
     span {
       box-sizing: border-box;
       margin: 0 12px;
@@ -334,8 +174,7 @@ export default {
       color: #fff;
       letter-spacing: 2px;
       &:active {
-      background: #14ca94;
-
+        background: #14ca94;
       }
     }
   }

@@ -12,17 +12,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item of 10" :key="item" class="tr">
-            <td>123</td>
-            <td>123</td>
-            <td>123</td>
+          <tr v-for="(item,index) of list" :key="index" class="tr">
+            <td>{{++index}}</td>
+            <td>{{item.F_RealName}}</td>
+            <td>{{item.F_InvitUserNum}}</td>
           </tr>
         </tbody>
       </table>
       <div class="header"></div>
     </div>
-     <div class="btn-group">
-      <span>继续抽奖</span>
+    <div class="btn-group">
+      <span @click="goPage">继续抽奖</span>
     </div>
   </div>
 </template>
@@ -34,230 +34,38 @@ export default {
   name: 'Poster',
   data() {
     return {
-      show: false,
-      active: 0,
-      dialogShow: true,
-      pIndex: 1,
-      showPresentDialog: false,
-      presentData: [
-        {
-          name: 'первое место безщёточная аккумуляторная ударная дрель',
-          bgcolor: '#FAEFBF',
-        },
-        {
-          name:
-            'второе место аккумуляторная(беспроводная) мойка высокого давления',
-          bgcolor: '#DAD9D9',
-        },
-        {
-          name: 'третье место набор отвёрток SАТА пэн',
-          bgcolor: '#F0BC75',
-        },
-        {
-          name: 'четвёртое место набор инструментов 53 из предметов',
-          bgcolor: '#F3C88F',
-        },
-        {
-          name: 'пятое место упаковка нитриловых перчаток (10 пар)',
-          bgcolor: '#F3C88F',
-        },
-      ],
-      blocks: [
-        { padding: '4px', background: '#006648' },
-        { padding: '10px', background: '#fad5a4' },
-        { padding: '2px', background: '#e76f51' },
-      ],
-      buttons: [
-        {
-          radius: '40px',
-          imgs: [
-            {
-              src: require('../assets/images/present-btn.png'),
-              width: '105%',
-              top: '-130%',
-            },
-          ],
-        },
-      ],
-      prizes: [],
-      defaultConfig: { speed: 15 },
-      mobile: '',
-      prize: {},
-      awardList: [], //我的奖品
+      mobile: sessionStorage.getItem('telephone'),
+      list: []
     }
   },
   created() {
-    // const mobile = localStorage.getItem('f_Mobile')
-    // if (!mobile) {
-    //   this.$router.push('/')
-    //   return
-    // }
-    // this.mobile = mobile
-    // this.getMyPresent()
+
+    this.getList()
   },
-  mounted() {
-    this.getPrizesList()
-  },
+
   methods: {
-    handleClick(flag) {
-      this.active = flag
-      this.show = true
-    },
-    getPrizesList() {
-      const prizes = []
-      let data = [
-        {
-          name: '',
-          img: require('../assets/present/1.png'),
-          color: '#f8d384',
-          flag: 1,
-        },
-        {
-          name: '',
-          img: require('../assets/present/3.png'),
-          color: '#f9e3bb',
-          flag: 3,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-        {
-          name: '',
-          img: require('../assets/present/2.png'),
-          color: '#f8d384',
-          flag: 2,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-
-        {
-          name: '',
-          img: require('../assets/present/4.png'),
-          color: '#f9e3bb',
-          flag: 4,
-        },
-        {
-          name: '',
-          img: require('../assets/present/5.png'),
-          color: '#fef43e',
-          flag: 5,
-        },
-        {
-          name: '',
-          img: require('../assets/present/6.png'),
-          color: '#d7d7d7',
-          flag: 6,
-        },
-      ]
-      data.forEach((item, index) => {
-        prizes.push({
-          // name: item.name,
-          background: item.color,
-          fonts: [{ text: item.name, top: '10%' }],
-          imgs: [{ src: item.img, width: '65%', top: '5%' }],
-          flag: item.flag,
-        })
-      })
-      this.prizes = prizes
-    },
-    getResult() {
-      return new Promise((resolve, reject) => {
-        axios
-          .post('/LuckyDraw/goodluck', {
-            mobile: this.mobile,
-            // isWin: 1,
-          })
-          .then((res) => {
-            console.log('中奖结果：', res)
-            const { data } = res
-            resolve(data)
-          })
-      })
-    },
     // 获取我的奖品
-    getMyPresent() {
+    getList() {
       return new Promise((resolve, reject) => {
         axios
-          .get('LuckyDraw/lucklist', {
+          .get('/User/getinvitelist', {
             params: {
+              page: 1,
+              rows: 10000,
               mobile: this.mobile,
             },
           })
           .then((res) => {
             const { data } = res
             console.log(data)
-            this.awardList = data.data
+            this.list = data.data.rows;
             resolve(data)
           })
       })
     },
-    receivePresent() {
-      this.$router.push({
-        path: '/redeem',
-        query: {
-          detail: JSON.stringify(this.prize),
-        },
-      })
-    },
-    clickAward(item) {
-      this.$router.push({
-        path: '/redeem',
-        query: {
-          detail: JSON.stringify(item),
-        },
-      })
-    },
-    getPresentDetail(id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('/LuckyDraw/luckDetail', {
-            params: {
-              mobile: this.mobile,
-            },
-          })
-          .then((res) => {
-            const { data } = res
-            console.log(data)
-            resolve(data)
-          })
-      })
-    },
-    startCallBack() {
-      let that = this
-      this.$refs.LuckyWheel.play()
-      setTimeout(() => {
-        that.getResult().then((res) => {
-          let flag
-          that.prizes.forEach((item, index) => {
-            if (item.flag === res.data.luckyKeyCode) {
-              flag = index
-              this.prize = res.data
-            }
-          })
-          that.$refs.LuckyWheel.stop(flag)
-        })
-      }, 3000)
-    },
-    endCallBack(prize) {
-      this.pIndex = prize.flag
-      // this.prize = prize
-      this.showPresentDialog = true
-      // alert(`恭喜你获得${prize.title}`)
-    },
-    goOutPage() {
-      this.showPresentDialog = false
-      let url = localStorage.getItem('url')
-      window.location.href = url
-    },
+    goPage(){
+      this.$router.push('/home')
+    }
   },
 }
 </script>
@@ -294,6 +102,9 @@ export default {
     padding: 40px 40px;
     margin: 40px 10px 18px 20px;
     min-height: 400px;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y:auto;
     background: url('../assets/images/leader-bg.png') no-repeat center center;
     background-size: 100% 100%;
     color: #fff;
@@ -304,10 +115,9 @@ export default {
       .thead {
         line-height: 40px;
         font-size: 16px;
-        position:relative;
+        position: relative;
         z-index: 100;
         font-weight: bold;
-        
       }
       td {
         text-align: center;
@@ -330,7 +140,7 @@ export default {
       background: url('../assets/images/leader-header.png') no-repeat center
         center;
       background-size: 100% 100%;
-      z-index:1;
+      z-index: 1;
     }
   }
   .mt-10 {

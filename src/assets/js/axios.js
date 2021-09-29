@@ -4,7 +4,7 @@ import qs from 'qs'
 // 超时设置
 const http = axios.create({
   timeout: 10000,
-  baseURL: 'https://api.test.bluetopo.cn:8212',
+  baseURL: 'http://39.97.178.20:8080',
   // headers:{
   //   'Content-Type': 'application/x-www-form-urlencoded'
   // }

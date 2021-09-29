@@ -9,19 +9,20 @@
         :blocks="blocks"
         :prizes="prizes"
         :buttons="buttons"
-        @start="startCallBack"
         @end="endCallBack"
         :default-config="defaultConfig"
       />
     </div>
     <!--  @click="handleClick(1)" -->
-    <div class="present-btn">开始抽奖</div>
+    <div class="present-btn m-style" @click="startCallBack">开始抽奖</div>
+
+    <div class="present-btn" @click="goCardPage">集结卡片</div>
     <!-- 中奖弹框 -->
     <div class="custom-dialog" v-if="showPresentDialog">
       <div class="dialog-content">
         <!-- 中奖 -->
         <div class="dialog-sub-box">
-          <div v-if="pIndex != 6" class="dialog-title-desc">Поздравляем!</div>
+          <div v-if="pIndex != 6" class="dialog-title-desc">恭喜!</div>
           <img
             class="dialog-img"
             v-if="pIndex == 1"
@@ -48,23 +49,23 @@
             src="../assets/present/5-sub.png"
           />
           <div v-if="pIndex == 6">
-            <div class="not-title">к несчастью</div>
-            <div class="not-sub-title">Ты не выиграл</div>
+            <div class="not-title">很遗憾</div>
+            <div class="not-sub-title">您未中奖</div>
           </div>
           <div class="dialog-btn-group">
             <!-- 再玩一次 -->
-            <span class="play" @click="goPage">查看榜单</span>
+            <span class="play" @click="goPage">继续抽奖</span>
             <!-- 去领奖 -->
             <span v-if="pIndex != 6" class="surn" @click="receivePresent"
-              >Принять награду</span
+              >领奖</span
             >
           </div>
         </div>
         <!-- 未中奖 -->
       </div>
     </div>
-    <div class="dialog-btn" @click="show = true">
-      <div>我的<br/>奖品</div>
+    <div class="dialog-btn" @click="clickMyPresent">
+      <div>我的<br />奖品</div>
     </div>
     <!-- popup -->
     <van-popup
@@ -98,7 +99,7 @@
             >
               <div class="one">{{ item.luckyLevel }}</div>
               <div class="two">{{ item.luckyDescribe }}</div>
-              <div class="three">время выигрыша : {{ item.luckyTime }}</div>
+              <div class="three">中奖时间 : {{ item.luckyTime }}</div>
             </div>
           </div>
         </van-tab>
@@ -109,17 +110,19 @@
 
 <script>
 import axios from '../assets/js/axios'
+import { Toast } from 'vant'
 
 export default {
   name: 'Home',
   data() {
     return {
+      mobile: sessionStorage.getItem('telephone'),
       show: false,
       active: 0,
       dialogShow: true,
       pIndex: 1,
       showPresentDialog: false,
- 
+
       blocks: [
         { padding: '10px', background: '#006648' },
         { padding: '14px', background: '#fad5a4' },
@@ -131,18 +134,23 @@ export default {
           imgs: [
             {
               src: require('../assets/images/point.png'),
-              width: '100%',
-              height: '180%',
-              top: '-70%',
+              width: '60%',
+              height: '90%',
+              top: '-160%',
             },
           ],
         },
       ],
       prizes: [],
       defaultConfig: { speed: 15 },
-      mobile: '',
       prize: {},
-      awardList: [], //我的奖品
+      awardList: [
+        {
+          luckyLevel:1,
+          luckyDescribe:'12323',
+          luckyTime:'12313123'
+        }
+      ], //我的奖品
     }
   },
   created() {
@@ -162,6 +170,13 @@ export default {
       this.active = flag
       this.show = true
     },
+    goCardPage(){
+      this.$router.push('/card')
+    },
+    clickMyPresent(){
+      this.getMyPresent()
+      this.show = true
+    },
     getPrizesList() {
       const prizes = []
       let data = [
@@ -174,38 +189,23 @@ export default {
         },
         {
           name: '一等奖',
-
           color: '#006648',
           fontColor: '#FFD502',
           subName: '家用礼包',
           flag: 1,
         },
         {
-          name: '二等奖',
-          color: '#FFFFFF',
-          fontColor: '#FFD502',
-          subName: '洗车枪',
-          flag: 2,
-        },
-        {
           name: '三等奖',
           color: '#006648',
           fontColor: '#FFD502',
           subName: 'DIY大礼包',
-          flag: 1,
-        },
-        {
-          name: '一等奖',
-          color: '#FFFFFF',
-          fontColor: '#FFD502',
-          subName: '车主礼包',
-          flag: 1,
+          flag: 3,
         },
       ]
-      data.forEach((item, index) => {
+       data.forEach((item, index) => {
         prizes.push({
           // name: item.name,
-          background: item.color,
+          background: index % 2 ? '#006648' : '#fff',
           fonts: [
             { text: item.name, top: '10%', fontColor: item.fontColor },
             {
@@ -218,6 +218,83 @@ export default {
           flag: item.flag,
         })
       })
+
+      //----------
+      // let data = [
+      //   {
+      //     name: '',
+      //     img: require('../assets/present/2.png'),
+      //     flag: 2,
+      //   },
+      //   {
+      //     name: '',
+      //     img: require('../assets/present/1.png'),
+      //     flag: 1,
+      //   },
+      //   {
+      //     name: '',
+      //     img: require('../assets/present/3.png'),
+      //     flag: 3,
+      //   },
+      //   {
+      //     name: '',
+      //     img: require('../assets/present/4.png'),
+      //     flag: 4,
+      //   },
+      //   {
+      //     name: '',
+      //     img: require('../assets/present/5.png'),
+      //     flag: 5,
+      //   },
+      //   // {
+      //   //   name: '一等奖',
+
+      //   //   color: '#006648',
+      //   //   fontColor: '#FFD502',
+      //   //   subName: '家用礼包',
+      //   //   flag: 1,
+      //   // },
+      //   // {
+      //   //   name: '二等奖',
+      //   //   color: '#FFFFFF',
+      //   //   fontColor: '#FFD502',
+      //   //   subName: '洗车枪',
+      //   //   flag: 2,
+      //   // },
+      //   // {
+      //   //   name: '三等奖',
+      //   //   color: '#006648',
+      //   //   fontColor: '#FFD502',
+      //   //   subName: 'DIY大礼包',
+      //   //   flag: 1,
+      //   // },
+      //   // {
+      //   //   name: '一等奖',
+      //   //   color: '#FFFFFF',
+      //   //   fontColor: '#FFD502',
+      //   //   subName: '车主礼包',
+      //   //   flag: 1,
+      //   // },
+      // ]
+      // data.forEach((item, index) => {
+      //   prizes.push({
+      //     background: index % 2 ? '#006648' : '#fff',
+      //     fonts: [{ text: item.name, top: '10%' }],
+      //     imgs: [
+      //       { src: item.img, width: '100px', height: '100px', top: '10px' },
+      //     ],
+      //     // fonts: [
+      //     //   { text: item.name, top: '10%', fontColor: item.fontColor },
+      //     //   {
+      //     //     text: item.subName,
+      //     //     top: '30%',
+      //     //     fontColor: item.fontColor,
+      //     //     lengthLimit: 30,
+      //     //   },
+      //     // ],
+      //     flag: item.flag,
+      //   })
+      // })
       prizes.push({
         background: '#006648',
         fonts: [
@@ -228,7 +305,7 @@ export default {
             lengthLimit: 30,
           },
         ],
-        flag: 8,
+        flag: 4,
       })
       this.prizes = prizes
     },
@@ -240,9 +317,10 @@ export default {
             // isWin: 1,
           })
           .then((res) => {
-            console.log('中奖结果：', res)
             const { data } = res
-            resolve(data)
+            console.log('中奖结果：', data,data.data)
+
+            resolve(data.data)
           })
       })
     },
@@ -260,6 +338,23 @@ export default {
             console.log(data)
             this.awardList = data.data
             resolve(data)
+          })
+      })
+    },
+    // 获取抽奖次数
+    getHasLuckyNum() {
+      return new Promise((resolve) => {
+        axios
+          .post('/User/savesdgq', {
+            f_Mobile: this.mobile,
+          })
+          .then((res) => {
+            const { data } = res
+
+            sessionStorage.setItem('userInfo', JSON.stringify(data.data))
+
+            console.log(data.data)
+            resolve(data.data)
           })
       })
     },
@@ -296,19 +391,28 @@ export default {
     },
     startCallBack() {
       let that = this
-      this.$refs.LuckyWheel.play()
-      setTimeout(() => {
-        that.getResult().then((res) => {
-          let flag
-          that.prizes.forEach((item, index) => {
-            if (item.flag === res.data.luckyKeyCode) {
-              flag = index
-              this.prize = res.data
-            }
-          })
-          that.$refs.LuckyWheel.stop(flag)
-        })
-      }, 3000)
+      this.getHasLuckyNum().then((res) => {
+        if (res.hasNum == 0) {
+          Toast.fail('您的抽奖机会已经用完，赶快去邀请好友助力！')
+          return
+        } else {
+          
+          that.$refs.LuckyWheel.play()
+          setTimeout(() => {
+
+            that.getResult().then((res) => {
+              let flag
+              that.prizes.forEach((item, index) => {
+                if (item.flag === res.luckyKeyCode) {
+                  flag = index
+                  this.prize = res
+                }
+              })
+              that.$refs.LuckyWheel.stop(flag)
+            })
+          }, 3000)
+        }
+      })
     },
     endCallBack(prize) {
       this.pIndex = prize.flag
@@ -317,7 +421,7 @@ export default {
       // alert(`恭喜你获得${prize.title}`)
     },
     goPage() {
-      this.$router.push('/leader-board')
+       this.showPresentDialog = false
     },
   },
 }
@@ -331,7 +435,7 @@ export default {
 </style>
 <style lang="scss" scoped>
 .home {
-  position:relative;
+  position: relative;
   box-sizing: border-box;
   padding: 20px 30px;
   width: 100%;
@@ -356,27 +460,29 @@ export default {
     padding: 12px 0;
     text-align: center;
     border-radius: 8px;
-    margin: 30px auto;
+    margin: 0 auto ;
     &:active {
       background: #2fd7a5;
     }
   }
-.dialog-btn {
-  position: absolute;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  right: 0;
-  top:200px;
-  width: 60px;
-  height: 50px;
-  border-radius: 10px 0 0 10px;
-  border-right:none;
-  background:#006648;
-  text-align:center;
-  font-size: 14px;
-
-}
+  .m-style {
+    margin:30px auto 10px;
+  }
+  .dialog-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    top: 200px;
+    width: 60px;
+    height: 50px;
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+    background: #006648;
+    text-align: center;
+    font-size: 14px;
+  }
   .active-desc {
     color: #000;
     font-size: 14px;
@@ -432,6 +538,7 @@ export default {
     right: 0;
     background: #000;
     opacity: 0.94;
+    z-index: 1000;
   }
   .dialog-content {
     width: 290px;
