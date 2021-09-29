@@ -22,33 +22,23 @@
       <div class="dialog-content">
         <!-- 中奖 -->
         <div class="dialog-sub-box">
-          <div v-if="pIndex != 6" class="dialog-title-desc">恭喜!</div>
+          <div v-if="pIndex != 4" class="dialog-title-desc">恭喜!</div>
           <img
             class="dialog-img"
             v-if="pIndex == 1"
-            src="../assets/present/1-sub.png"
+            src="../assets/images//detail/one.png"
           />
           <img
             class="dialog-img"
             v-if="pIndex == 2"
-            src="../assets/present/2-sub.png"
+            src="../assets/images//detail/two.png"
           />
           <img
             class="dialog-img"
             v-if="pIndex == 3"
-            src="../assets/present/3-sub.png"
+            src="../assets/images/detail/three.png"
           />
-          <img
-            class="dialog-img"
-            v-if="pIndex == 4"
-            src="../assets/present/4-sub.png"
-          />
-          <img
-            class="dialog-img"
-            v-if="pIndex == 5"
-            src="../assets/present/5-sub.png"
-          />
-          <div v-if="pIndex == 6">
+          <div v-if="pIndex == 4">
             <div class="not-title">很遗憾</div>
             <div class="not-sub-title">您未中奖</div>
           </div>
@@ -98,7 +88,11 @@
               :key="index"
             >
               <div class="one">{{ item.luckyLevel }}</div>
-              <div class="two">{{ item.luckyDescribe }}</div>
+              <div class="two">
+                <span v-if="item.luckyLevel == '一等奖'">世达爆款产品大礼包二选一(车主礼包/家用礼包)</span>
+                 <span v-if="item.luckyLevel == '二等奖'">88件套/洗车枪二选一</span>
+                 <span v-if="item.luckyLevel == '三等奖'">DIY大礼包</span>
+              </div>
               <div class="three">中奖时间 : {{ item.luckyTime }}</div>
             </div>
           </div>

@@ -18,8 +18,9 @@
       <div>邀请好友数量满足30名以上,第一名可获得大礼包</div>
       <div>(如并列以最早时间为准)</div>
       <div class="title">活动详情</div>
+      <div class="qrcode"></div>
     </div>
-    <div class="time center bold">活动时间：10月1日 - 10月7日</div>
+    <div class="time center bold ">活动时间：10月1日 - 10月7日</div>
     <div class="tip">(请截图保存图片或长按助力码复制,发送给好友)</div>
     <div class="code">{{ userInfo.invitCode }}</div>
   </div>
@@ -45,9 +46,10 @@ export default {
 .poster-box {
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   background: #fff;
   color: #26654c;
+  padding-bottom: 20px;
   .header {
     height: 260px;
     background: url('../assets/images/poster-header.png') no-repeat center
@@ -92,6 +94,15 @@ export default {
       border: 2px solid #005b3b;
       background: #fff;
       color: #27654c;
+    }
+    .qrcode {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      width: 100px;
+      height: 88px;
+      background: url('../assets/images/url-code.png') no-repeat center center;
+      background-size: 100% 100%;
     }
   }
   .mt-10 {

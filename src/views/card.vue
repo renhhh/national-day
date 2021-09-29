@@ -116,7 +116,7 @@ export default {
 .card-box {
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   .header {
     height: 260px;
     background: url('../assets/images/card-header.png') no-repeat center center;
@@ -124,14 +124,15 @@ export default {
   }
   .center-box {
     width: 88%;
-    height: 100px;
+    // height: 100px;
     margin: 30px auto;
     border: 2px solid #068b64;
     border-radius: 20px;
+    padding-bottom: 20px;
     .center-item {
       box-sizing: border-box;
       width: 96%;
-      height: 90%;
+      // height: 90%;
       padding: 12px 20px;
       font-size: 15px;
       line-height: 22px;
